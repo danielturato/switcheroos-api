@@ -1,0 +1,29 @@
+scripts:
+  locations:
+    db-schema: /db-scripts/schema.sql
+    db-data: /db-scripts/data.sql
+
+---
+
+# Hibernate Configuration
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: POSTGRESQL
+  sql:
+    init:
+      mode: always
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/accounts_db
+    username: postgres
+    password: password
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
