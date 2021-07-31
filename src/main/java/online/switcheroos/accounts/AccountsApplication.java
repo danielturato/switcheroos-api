@@ -1,46 +1,36 @@
 package online.switcheroos.accounts;
 
-import io.r2dbc.spi.ConnectionFactory;
-import org.springframework.beans.factory.annotation.Value;
+import online.switcheroos.accounts.api.v1.model.Account;
+import online.switcheroos.accounts.api.v1.repository.AccountRepository;
+import online.switcheroos.accounts.model.Platform;
+import online.switcheroos.accounts.model.PlatformAccount;
+import online.switcheroos.accounts.model.Role;
+import online.switcheroos.accounts.model.Status;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
-import org.springframework.r2dbc.connection.init.DatabasePopulator;
-import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
+
+import java.util.Set;
 
 @SpringBootApplication
-public class AccountsApplication {
+public class AccountsApplication implements CommandLineRunner {
 
-	@Value("${scripts.locations.db-schema}")
-	private String schemaScript;
-
-	@Value("${scripts.locations.db-data}")
-	private String dataScript;
+	@Autowired
+	AccountRepository accountRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AccountsApplication.class, args);
 	}
 
-	@Bean
-	@Profile("dev")
-	ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
-		ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
-		initializer.setConnectionFactory(connectionFactory);
-		initializer.setDatabasePopulator(databasePopulator());
 
-		return initializer;
+	@Override
+	public void run(String... args) throws Exception {
+		accountRepository.save(new Account("biasad", "asdad@gmail.com",
+				"https://facebook.com", false, Status.ACTIVE,
+				Set.of(Role.ADMIN), Set.of(new PlatformAccount(Platform.PSN, "Remedy0_"))));
+
+		System.out.println(accountRepository.findById(2L));
 	}
-
-	private DatabasePopulator databasePopulator() {
-		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-		populator.addScript(new ClassPathResource(schemaScript));
-		populator.addScript(new ClassPathResource(dataScript));
-
-		return populator;
-	}
-
 }
 

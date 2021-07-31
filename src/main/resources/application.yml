@@ -1,8 +1,3 @@
-scripts:
-  locations:
-    db-schema: /db-scripts/schema.sql
-    db-data: /db-scripts/data.sql
-
 ---
 
 # Hibernate Configuration
@@ -14,13 +9,16 @@ spring:
     hibernate:
       ddl-auto: none
     database: POSTGRESQL
-  sql:
-    init:
-      mode: always
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5432/accounts_db
+    generate-ddl: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/accounts_db
     username: postgres
     password: password
+  sql:
+    init:
+      schema-locations: classpath:db-scripts/schema.sql
+      mode: always
+      data-locations: classpath:db-scripts/data.sql
 ---
 
 spring:

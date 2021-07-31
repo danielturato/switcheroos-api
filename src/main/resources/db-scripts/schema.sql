@@ -1,9 +1,9 @@
-DROP TYPE IF EXISTS status;
-DROP TYPE IF EXISTS role;
-DROP TYPE IF EXISTS platform;
 DROP TABLE IF EXISTS accounts_roles;
 DROP TABLE IF EXISTS platform_accounts;
 DROP TABLE IF EXISTS accounts;
+DROP TYPE IF EXISTS status;
+DROP TYPE IF EXISTS role;
+DROP TYPE IF EXISTS platform;
 
 
 CREATE TYPE status as ENUM  (
@@ -17,8 +17,6 @@ CREATE TYPE role as ENUM (
 CREATE TYPE platform as ENUM (
     'PSN', 'XBOX', 'ACTI_BLIZZARD'
     );
-
-
 
 CREATE TABLE accounts (
     id SERIAL PRIMARY KEY,
@@ -40,7 +38,6 @@ CREATE TABLE accounts_roles (
 );
 
 CREATE TABLE platform_accounts (
-    id                SERIAL PRIMARY KEY,
     account_id        int         NOT NULL,
     platform       platform         NOT NULL,
     platform_username varchar(50) NOT NULL,
