@@ -21,6 +21,7 @@ CREATE TYPE platform as ENUM (
 CREATE TABLE accounts (
     id SERIAL PRIMARY KEY,
     username VARCHAR (15) UNIQUE NOT NULL,
+    password VARCHAR (60) NOT NULL,
     email VARCHAR (50) UNIQUE NOT NULL,
     profile_picture VARCHAR(50) NOT NULL,
     verified BOOLEAN DEFAULT FALSE,

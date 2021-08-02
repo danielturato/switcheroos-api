@@ -1,5 +1,6 @@
 package online.switcheroos.accounts.api.v1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import online.switcheroos.accounts.core.PostgreSQLEnumType;
 import online.switcheroos.accounts.model.PlatformAccount;
@@ -29,9 +30,13 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private Username username;
 
-    private String email;
+    @JsonIgnore
+    private Password password;
+
+    @Column(unique = true)
+    private Email email;
 
     private String profilePicture;
 
@@ -52,8 +57,9 @@ public class Account {
     @CollectionTable(name = "platform_accounts", joinColumns = @JoinColumn(name = "account_id"))
     private Set<PlatformAccount> platformAccounts;
 
-    public Account(String username, String email, String profilePicture, boolean verified, Status status, Set<Role> roles, Set<PlatformAccount> platformAccounts) {
+    public Account(Username username, Password password, Email email, String profilePicture, boolean verified, Status status, Set<Role> roles, Set<PlatformAccount> platformAccounts) {
         this.username = username;
+        this.password = password;
         this.email = email;
         this.profilePicture = profilePicture;
         this.verified = verified;
