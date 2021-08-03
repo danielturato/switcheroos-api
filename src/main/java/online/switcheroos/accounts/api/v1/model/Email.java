@@ -1,5 +1,6 @@
 package online.switcheroos.accounts.api.v1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import static org.apache.commons.lang3.Validate.*;
 public class Email {
 
     @Transient
+    @JsonIgnore
     private final EmailValidator emailValidator = EmailValidator.getInstance();
 
     @Column(name = "email", unique = true)

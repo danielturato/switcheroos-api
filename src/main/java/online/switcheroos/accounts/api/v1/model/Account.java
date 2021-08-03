@@ -32,10 +32,8 @@ public class Account {
 
     private Username username;
 
-    @JsonIgnore
     private Password password;
 
-    @Column(unique = true)
     private Email email;
 
     private String profilePicture;
@@ -57,7 +55,8 @@ public class Account {
     @CollectionTable(name = "platform_accounts", joinColumns = @JoinColumn(name = "account_id"))
     private Set<PlatformAccount> platformAccounts;
 
-    public Account(Username username, Password password, Email email, String profilePicture, boolean verified, Status status, Set<Role> roles, Set<PlatformAccount> platformAccounts) {
+    public Account(Username username, Password password, Email email, String profilePicture, boolean verified,
+                   Status status, Set<Role> roles, Set<PlatformAccount> platformAccounts) {
         this.username = username;
         this.password = password;
         this.email = email;

@@ -1,5 +1,6 @@
 package online.switcheroos.accounts.api.v1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +21,11 @@ import java.util.Arrays;
 public class Password {
 
     @Transient
+    @JsonIgnore
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Transient
+    @JsonIgnore
     private static final PasswordValidator PASSWORD_VALIDATOR = passwordValidator();
 
     private static PasswordValidator passwordValidator() {

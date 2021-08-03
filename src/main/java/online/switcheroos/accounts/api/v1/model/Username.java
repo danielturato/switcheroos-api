@@ -1,11 +1,12 @@
 package online.switcheroos.accounts.api.v1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 import static org.apache.commons.lang3.Validate.*;
 
@@ -14,8 +15,16 @@ import static org.apache.commons.lang3.Validate.*;
 @NoArgsConstructor
 public class Username {
 
+    @Transient
+    @JsonIgnore
     protected static final int MINIMUM_LENGTH = 3;
+
+    @Transient
+    @JsonIgnore
     protected static final int MAXIMUM_LENGTH = 15;
+
+    @Transient
+    @JsonIgnore
     protected static final String VALID_CHARACTERS = "[A-Za-z0-9_-]+";
 
     @Column(name = "username", unique = true)
