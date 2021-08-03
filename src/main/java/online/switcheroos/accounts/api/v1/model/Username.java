@@ -3,6 +3,7 @@ package online.switcheroos.accounts.api.v1.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,6 +14,7 @@ import static org.apache.commons.lang3.Validate.*;
 @Embeddable
 @Getter
 @NoArgsConstructor
+@ToString
 public class Username {
 
     @Transient

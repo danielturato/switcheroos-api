@@ -1,10 +1,7 @@
 package online.switcheroos.accounts.api.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.passay.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -18,6 +15,7 @@ import java.util.Arrays;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Password {
 
     @Transient

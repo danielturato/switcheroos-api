@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
+import lombok.ToString;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import static org.apache.commons.lang3.Validate.*;
@@ -17,6 +18,7 @@ import static org.apache.commons.lang3.Validate.*;
 @Embeddable
 @Getter
 @NoArgsConstructor
+@ToString
 public class Email {
 
     @Transient

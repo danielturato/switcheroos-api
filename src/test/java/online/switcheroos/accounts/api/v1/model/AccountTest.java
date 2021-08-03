@@ -54,7 +54,8 @@ class AccountTest {
     @DisplayName("An account can be found by it's username")
     void accountCanBeFoundByUsername() {
         this.accountRepository.save(this.account);
-        assertThat(this.accountRepository.findByUsername("testing").getUsername().getValue())
+        assertThatNoException().isThrownBy(() -> this.accountRepository.findByUsername("testing").get());
+        assertThat(this.accountRepository.findByUsername("testing").get().getUsername().getValue())
                 .isEqualTo("testing");
     }
 
@@ -62,15 +63,17 @@ class AccountTest {
     @DisplayName("An account can be found by it's email")
     void accountCanBeFoundByEmail() {
         this.accountRepository.save(this.account);
-        assertThat(this.accountRepository.findByEmail("testing@switcheroos.online").getEmail().getValue())
+        assertThatNoException().isThrownBy(() -> this.accountRepository.findByEmail("testing@switcheroos.online").get());
+        assertThat(this.accountRepository.findByEmail("testing@switcheroos.online").get().getEmail().getValue())
                 .isEqualTo("testing@switcheroos.online");
     }
 
     @Test
     @DisplayName("An account can be found by it's id")
     void accountCanBeFoundById() {
-        this.accountRepository.save(this.account);
-        assertThat(this.accountRepository.findById(1L).get().getUsername().getValue())
+       Account savedAccount = this.accountRepository.save(this.account);
+        assertThatNoException().isThrownBy(() -> this.accountRepository.findById(savedAccount.getId()).get());
+        assertThat(this.accountRepository.findById(savedAccount.getId()).get().getUsername().getValue())
                 .isEqualTo("testing");
     }
 }
