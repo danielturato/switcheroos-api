@@ -21,6 +21,7 @@ import org.mockito.*;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -55,8 +56,10 @@ class AccountServiceImplTest {
         Password password = new Password("PassW0rd!)");
         this.passwordSpy = Mockito.spy(password);
 
+        UUID id = UUID.randomUUID();
+
         this.account = Account.builder()
-                .id(2L)
+                .id(id)
                 .password(passwordSpy)
                 .username(new Username("testing"))
                 .email(new Email("testing@switcheroos.online"))
@@ -67,7 +70,7 @@ class AccountServiceImplTest {
                 .platformAccounts(Set.of(new PlatformAccount(Platform.PSN, "switcheroos"))).build();
 
         this.accountDto = AccountDto.builder()
-                .id(2L)
+                .id(id)
                 .username("testing")
                 .email("testing@switcheroos.online")
                 .profilePicture("https://switcheroos.online")
@@ -80,12 +83,12 @@ class AccountServiceImplTest {
 
     @Test
     void getAccountByIdReturnsAccountDto() {
-        given(repository.findById(any(Long.class))).willReturn(Optional.of(this.account));
+        given(repository.findById(any(UUID.class))).willReturn(Optional.of(this.account));
         given(mapper.accountToAccountDto(any(Account.class))).willReturn(this.accountDto);
 
-        AccountDto accountDto = accountService.findAccountById(2L);
+        AccountDto accountDto = accountService.findAccountById(account.getId());
 
-        verify(repository).findById(any(Long.class));
+        verify(repository).findById(account.getId());
         verify(mapper).accountToAccountDto(any(Account.class));
 
         assertThat(accountDto.getId()).isEqualTo(this.account.getId());
@@ -143,4 +146,21 @@ class AccountServiceImplTest {
         assertThat(accountDto.getEmail()).isEqualTo(newAccountDto.getEmail());
         assertThat(accountDto.getUsername()).isEqualTo(newAccountDto.getUsername());
     }
+
+//    @Test
+//    void updateAccountUpdatesAccount() {
+//        this.accountDto.setUsername("testing-new-user");
+//
+//        given(mapper.accountDtoToAccount(any(AccountDto.class))).willReturn(this.account);
+//        given(repository.save(any(Account.class))).willReturn(this.account);
+//        given(mapper.accountToAccountDto(any(Account.class))).willReturn(this.accountDto);
+//
+//        AccountDto accountDto = accountService.updateAccount(this.accountDto.getId(), this.accountDto);
+//
+//        verify(mapper).accountDtoToAccount(any(AccountDto.class));
+//        verify(mapper).accountToAccountDto(any(Account.class));
+//        verify(repository).save(any(Account.class));
+//
+//        assertThat(accountDto.getUsername()).isEqualTo("testing-new-user");
+//    }
 }

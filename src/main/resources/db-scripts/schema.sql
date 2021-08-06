@@ -19,7 +19,7 @@ CREATE TYPE platform as ENUM (
     );
 
 CREATE TABLE accounts (
-    id SERIAL PRIMARY KEY,
+    id uuid PRIMARY KEY,
     username VARCHAR (15) UNIQUE NOT NULL,
     password VARCHAR (60) NOT NULL,
     email VARCHAR (50) UNIQUE NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE accounts (
 );
 
 CREATE TABLE accounts_roles (
-  account_id int NOT NULL,
+  account_id uuid NOT NULL,
   role role NOT NULL,
   UNIQUE (account_id, role),
   CONSTRAINT fk_account
@@ -39,7 +39,7 @@ CREATE TABLE accounts_roles (
 );
 
 CREATE TABLE platform_accounts (
-    account_id        int         NOT NULL,
+    account_id        uuid         NOT NULL,
     platform       platform         NOT NULL,
     platform_username varchar(50) NOT NULL,
     UNIQUE (account_id, platform),

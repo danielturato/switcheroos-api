@@ -12,8 +12,7 @@ import online.switcheroos.accounts.model.Status;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -28,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDto findAccountById(Long id) {
+    public AccountDto findAccountById(UUID id) {
         Optional<Account> optAccount = repository.findById(id);
         Account account = unwrapAccount(optAccount, "The account with the ID: " + id + " does not exist.");
 
@@ -70,7 +69,8 @@ public class AccountServiceImpl implements AccountService {
         try {
             return saveAccount(account);
         } catch (DataIntegrityViolationException ex) {
-            throw new AccountAlreadyExistsException("An account already exists with that email or username.");
+            throw new AccountAlreadyExistsException("The username or email provided is already in use on an existing Account");
+            // TODO:drt - exteneralise
         }
     }
 

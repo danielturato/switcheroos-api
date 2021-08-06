@@ -4,9 +4,12 @@ import online.switcheroos.accounts.api.v1.dto.AccountDto;
 import online.switcheroos.accounts.api.v1.dto.NewAccountDto;
 import online.switcheroos.accounts.api.v1.model.Account;
 
+import java.util.Map;
+import java.util.UUID;
+
 public interface AccountService {
 
-    AccountDto findAccountById(Long id);
+    AccountDto findAccountById(UUID id);
 
     AccountDto findAccountByUsername(String username);
 
@@ -15,4 +18,5 @@ public interface AccountService {
     AccountDto saveAccount(Account account);
 
     AccountDto createAccount(NewAccountDto accountDto);
+
 }

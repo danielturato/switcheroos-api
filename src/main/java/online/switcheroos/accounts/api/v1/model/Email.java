@@ -3,7 +3,6 @@ package online.switcheroos.accounts.api.v1.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -37,11 +36,11 @@ public class Email {
     }
 
     public String validateAndTrim(String value) {
-        notBlank(value);
+        notBlank(value, "The email provided was either null or blank");
 
         final String trimmed = value.trim();
         if (!emailValidator.isValid(trimmed)) {
-            throw new IllegalArgumentException("The value is not a valid email");
+            throw new IllegalArgumentException("The email provided is not valid");
         }
 
         return trimmed;

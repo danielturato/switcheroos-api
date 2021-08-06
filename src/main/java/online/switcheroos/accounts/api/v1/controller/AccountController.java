@@ -2,15 +2,19 @@ package online.switcheroos.accounts.api.v1.controller;
 
 import online.switcheroos.accounts.api.v1.dto.AccountDto;
 import online.switcheroos.accounts.api.v1.dto.NewAccountDto;
+import online.switcheroos.accounts.api.v1.dto.ResourceResponseDto;
 import online.switcheroos.accounts.api.v1.model.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.UUID;
 
 
 public interface AccountController {
 
     @GetMapping("/{id}")
-    AccountDto getAccountById(@PathVariable Long id);
+    AccountDto getAccountById(@PathVariable UUID id);
 
     @GetMapping("/username/{username}")
     AccountDto getAccountByUsername(@PathVariable String username);
@@ -20,5 +24,6 @@ public interface AccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    AccountDto createAccount(@RequestBody NewAccountDto accountDto);
+    ResourceResponseDto createAccount(@RequestBody NewAccountDto accountDto);
+
 }

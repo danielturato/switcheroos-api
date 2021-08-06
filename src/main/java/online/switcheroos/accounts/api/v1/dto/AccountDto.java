@@ -1,21 +1,20 @@
 package online.switcheroos.accounts.api.v1.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import online.switcheroos.accounts.model.PlatformAccount;
 import online.switcheroos.accounts.model.Role;
 import online.switcheroos.accounts.model.Status;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class AccountDto {
 
-    private Long id;
+    private UUID id;
 
     private String username;
 
@@ -31,4 +30,5 @@ public class AccountDto {
 
     private Set<PlatformAccount> platformAccounts;
 
+    public AccountDto() {}
 }

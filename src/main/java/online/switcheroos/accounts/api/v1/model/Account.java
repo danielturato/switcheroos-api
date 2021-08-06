@@ -6,11 +6,14 @@ import online.switcheroos.accounts.core.PostgreSQLEnumType;
 import online.switcheroos.accounts.model.PlatformAccount;
 import online.switcheroos.accounts.model.Role;
 import online.switcheroos.accounts.model.Status;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "accounts")
@@ -24,11 +27,13 @@ import java.util.Set;
         name = "psql_enum",
         typeClass = PostgreSQLEnumType.class
 )
-public class Account {
+public class Account implements Persistable<UUID> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @GeneratedValue(generator = "UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     private Username username;
 
@@ -65,5 +70,10 @@ public class Account {
         this.status = status;
         this.roles = roles;
         this.platformAccounts = platformAccounts;
+    }
+
+    @Override
+    public boolean isNew() {
+        return id == null;
     }
 }

@@ -54,7 +54,7 @@ public class Password {
     public void validate() {
         RuleResult result = PASSWORD_VALIDATOR.validate(new PasswordData(this.value));
         if (!result.isValid()) {
-            throw new IllegalArgumentException("The password is invalid: " + result.getDetails().get(0));
+            throw new IllegalArgumentException("The password provided is invalid: " + result.getDetails().get(0));
         }
     }
 }

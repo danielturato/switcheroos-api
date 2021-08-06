@@ -3,6 +3,7 @@ package online.switcheroos.accounts.api.v1.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import online.switcheroos.accounts.api.v1.dto.AccountDto;
 import online.switcheroos.accounts.api.v1.dto.NewAccountDto;
+import online.switcheroos.accounts.api.v1.dto.ResourceResponseDto;
 import online.switcheroos.accounts.api.v1.repository.AccountRepository;
 import online.switcheroos.accounts.api.v1.service.AccountService;
 import online.switcheroos.accounts.model.Platform;
@@ -19,11 +20,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,7 +48,7 @@ class AccountControllerImplTest {
     @BeforeEach
     void setUp() {
         this.accountDto = AccountDto.builder()
-                .id(1L)
+                .id(UUID.randomUUID())
                 .username("testing")
                 .email("testing@switcheroos.online")
                 .profilePicture("https://switcheroos.online")
@@ -62,12 +63,12 @@ class AccountControllerImplTest {
     void getAccountByIdShouldReturnAccount() throws Exception {
         String expectedResponse = this.objectMapper.writeValueAsString(accountDto);
 
-        given(accountService.findAccountById(1L)).willReturn(accountDto);
+        given(accountService.findAccountById(accountDto.getId())).willReturn(accountDto);
 
         this.mockMvc.perform(get("/v1/accounts/{id}", this.accountDto.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedResponse))
-                .andExpect(jsonPath("$.id", is(this.accountDto.getId().intValue())))
+                .andExpect(jsonPath("$.id", is(this.accountDto.getId().toString())))
                 .andDo(print());
     }
 
@@ -101,10 +102,12 @@ class AccountControllerImplTest {
     void postAccountShouldReturnNewAccount() throws Exception {
         NewAccountDto newAccountDto =
                 new NewAccountDto("testing", "PassW0rd1!", "switcheroos@switcheroos.online");
+        ResourceResponseDto resourceResponseDto = new ResourceResponseDto("/api/v1/accounts/" + accountDto.getId());
+
         this.accountDto.setPlatformAccounts(null);
         this.accountDto.setProfilePicture(null);
         String request = this.objectMapper.writeValueAsString(newAccountDto);
-        String expectedResponse = this.objectMapper.writeValueAsString(this.accountDto);
+        String expectedResponse = this.objectMapper.writeValueAsString(resourceResponseDto);
 
         when(accountService.createAccount(any(NewAccountDto.class))).thenReturn(accountDto);
 
@@ -114,4 +117,17 @@ class AccountControllerImplTest {
                 .andExpect(content().string(expectedResponse))
                 .andDo(print());
     }
+//
+//    @Test
+//    void putAccountShouldUpdateAccount() throws Exception {
+//        this.accountDto.setUsername("testing-new-user");
+//        String requestBody = this.objectMapper.writeValueAsString(this.accountDto);
+//
+//        given(accountService.updateAccount(any(Long.class), any(AccountDto.class))).willReturn(this.accountDto);
+//
+//        this.mockMvc.perform(put("/v1/accounts/1")
+//                .contentType(MediaType.APPLICATION_JSON).content(requestBody))
+//                .andExpect(status().isNoContent())
+//                .andDo(print());
+//    }
 }

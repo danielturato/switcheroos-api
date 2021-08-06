@@ -2,11 +2,14 @@ package online.switcheroos.accounts.api.v1.controller;
 
 import online.switcheroos.accounts.api.v1.dto.AccountDto;
 import online.switcheroos.accounts.api.v1.dto.NewAccountDto;
-import online.switcheroos.accounts.api.v1.model.Account;
+import online.switcheroos.accounts.api.v1.dto.ResourceResponseDto;
 import online.switcheroos.accounts.api.v1.service.AccountService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/accounts")
@@ -19,7 +22,7 @@ public class AccountControllerImpl implements AccountController{
     }
 
     @Override
-    public AccountDto getAccountById(Long id) {
+    public AccountDto getAccountById(UUID id) {
         return accountService.findAccountById(id);
     }
 
@@ -34,7 +37,9 @@ public class AccountControllerImpl implements AccountController{
     }
 
     @Override
-    public AccountDto createAccount(@RequestBody NewAccountDto accountDto) {
-        return accountService.createAccount(accountDto);
+    public ResourceResponseDto createAccount(@RequestBody NewAccountDto accountDto) {
+        AccountDto account = accountService.createAccount(accountDto);
+        return new ResourceResponseDto("/api/v1/accounts/" + account.getId());
     }
+
 }

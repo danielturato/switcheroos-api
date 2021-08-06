@@ -41,11 +41,12 @@ public class Username {
     }
 
     public String validateAndTrim(String value) {
-        notBlank(value);
+        notBlank(value, "The username provided is either null or blank");
 
         final String trimmed = value.trim();
-        inclusiveBetween(MINIMUM_LENGTH, MAXIMUM_LENGTH, trimmed.length());
-        matchesPattern(trimmed, VALID_CHARACTERS, "Allowed characters are %s", VALID_CHARACTERS);
+        inclusiveBetween(MINIMUM_LENGTH, MAXIMUM_LENGTH, trimmed.length(),
+                "The username provided was not within the character length parameters of: MIN-%d,MAX-%d", MINIMUM_LENGTH, MAXIMUM_LENGTH);
+        matchesPattern(trimmed, VALID_CHARACTERS, "The username provided has invalid characters. The allowed characters are %s", VALID_CHARACTERS);
 
         return trimmed;
     }
