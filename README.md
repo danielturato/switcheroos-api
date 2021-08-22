@@ -1,1 +1,1 @@
-# account-service
+# Switcheroos API
