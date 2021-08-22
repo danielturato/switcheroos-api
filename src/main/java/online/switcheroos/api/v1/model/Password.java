@@ -21,6 +21,10 @@ public class Password implements Comparable<Password> {
 
     @Transient
     @JsonIgnore
+    public static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
+    @Transient
+    @JsonIgnore
     public static final int HASHED_PASSWORD_LENGTH = 60;
 
     @Transient
@@ -42,11 +46,6 @@ public class Password implements Comparable<Password> {
     @Transient
     @JsonIgnore
     private static final int PASSWORD_SPECIAL_CHARS = 1;
-
-
-    @Transient
-    @JsonIgnore
-    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Transient
     @JsonIgnore
@@ -72,6 +71,10 @@ public class Password implements Comparable<Password> {
      */
     public void hash() {
         this.value = PASSWORD_ENCODER.encode(this.value);
+    }
+
+    public boolean matches(String password) {
+        return PASSWORD_ENCODER.matches(password, this.value);
     }
 
     /**

@@ -4,7 +4,7 @@ import online.switcheroos.api.v1.dto.AccountDto;
 import online.switcheroos.api.v1.dto.AuthAccountDto;
 import online.switcheroos.api.v1.dto.NewAccountDto;
 import online.switcheroos.api.v1.dto.ResourceResponseDto;
-import online.switcheroos.dto.AuthAccountResponse;
+import online.switcheroos.dto.AuthAccountResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,9 @@ import java.util.UUID;
 public interface AccountController {
 
     @PostMapping("/authenticate")
-    AuthAccountResponse authenticateAccount(@RequestBody AuthAccountDto authAccountDto, HttpServletRequest request);
+    AuthAccountResponseDto authenticateAccount(@RequestBody AuthAccountDto authAccountDto,
+                                               HttpServletRequest request,
+                                               @RequestHeader(value = "User-Agent") String userAgent);
 
     @GetMapping("/{id}")
     AccountDto getAccountById(@PathVariable UUID id);

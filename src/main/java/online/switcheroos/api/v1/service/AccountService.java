@@ -4,27 +4,33 @@ import online.switcheroos.api.v1.dto.AccountDto;
 import online.switcheroos.api.v1.dto.AuthAccountDto;
 import online.switcheroos.api.v1.dto.NewAccountDto;
 import online.switcheroos.api.v1.model.Account;
-import online.switcheroos.dto.AuthAccountResponse;
+import online.switcheroos.api.v1.model.Inet;
+import online.switcheroos.dto.AuthAccountResponseDto;
 import org.jobrunr.jobs.annotations.Job;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 public interface AccountService {
 
-    AuthAccountResponse authenticateAccount(AuthAccountDto authAccountDto, HttpServletRequest request);
+    AuthAccountResponseDto authenticateAccount(AuthAccountDto authAccountDto);
 
-    AccountDto findAccountById(UUID id);
+    AccountDto findAccountDtoById(UUID id);
 
-    AccountDto findAccountByUsername(String username);
+    Account findAccountById(UUID id);
 
-    AccountDto findAccountByEmail(String email);
+    AccountDto findAccountDtoByUsername(String username);
+
+    Account findAccountByUsername(String username);
+
+    AccountDto findAccountDtoByEmail(String email);
+
+    Account findAccountByEmail(String email);
 
     AccountDto saveAccount(Account account);
 
     AccountDto createAccount(NewAccountDto accountDto);
 
     @Job(name = "Add login attempt for account ID: %0", retries = 2)
-    void addLoginAttempt(UUID accountId, AuthAccountResponse authResponse, HttpServletRequest request);
+    void logAuthAttempt(UUID accountId, boolean authenticated, Inet requestIp, String userAgent);
 
 }

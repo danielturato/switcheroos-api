@@ -21,7 +21,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @TypeDef(
         name = "psql_enum",
         typeClass = PostgreSQLEnumType.class
@@ -59,13 +58,12 @@ public class Account implements Persistable<UUID> {
     @CollectionTable(name = "platform_accounts", joinColumns = @JoinColumn(name = "account_id"))
     private Set<PlatformAccount> platformAccounts;
 
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @CollectionTable(name = "login_history", joinColumns = @JoinColumn(name = "account_id"))
-//    private Set<LoginAttempt> loginHistory;
-//
-//    public void addLoginAttempt(LoginAttempt loginAttempt) {
-//        loginHistory.add(loginAttempt);
-//    }
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<AuthenticationAttempt> loginHistory;
+
+    public void addLoginAttempt(AuthenticationAttempt loginAttempt) {
+        loginHistory.add(loginAttempt);
+    }
 
     @Override
     public boolean isNew() {

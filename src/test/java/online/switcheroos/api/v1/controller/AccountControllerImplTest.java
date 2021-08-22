@@ -63,7 +63,7 @@ class AccountControllerImplTest {
     void getAccountByIdShouldReturnAccount() throws Exception {
         String expectedResponse = this.objectMapper.writeValueAsString(accountDto);
 
-        given(accountService.findAccountById(accountDto.getId())).willReturn(accountDto);
+        given(accountService.findAccountDtoById(accountDto.getId())).willReturn(accountDto);
 
         this.mockMvc.perform(get("/v1/accounts/{id}", this.accountDto.getId()))
                 .andExpect(status().isOk())
@@ -76,7 +76,7 @@ class AccountControllerImplTest {
     void getAccountByUsernameShouldReturnAccount() throws Exception {
         String expectedResponse = this.objectMapper.writeValueAsString(accountDto);
 
-        given(accountService.findAccountByUsername("testing")).willReturn(accountDto);
+        given(accountService.findAccountDtoByUsername("testing")).willReturn(accountDto);
 
         this.mockMvc.perform(get("/v1/accounts/username/{username}", accountDto.getUsername()))
                 .andExpect(status().isOk())
@@ -89,7 +89,7 @@ class AccountControllerImplTest {
     void getAccountByEmailShouldReturnAccount() throws Exception {
         String expectedResponse = this.objectMapper.writeValueAsString(accountDto);
 
-        given(accountService.findAccountByEmail("testing@switcheroos.online")).willReturn(accountDto);
+        given(accountService.findAccountDtoByEmail("testing@switcheroos.online")).willReturn(accountDto);
 
         this.mockMvc.perform(get("/v1/accounts/email/{email}", accountDto.getEmail()))
                 .andExpect(status().isOk())

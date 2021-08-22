@@ -1,24 +1,21 @@
 package online.switcheroos.api.v1.service;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import online.switcheroos.api.v1.dto.AccountDto;
 import online.switcheroos.api.v1.dto.AuthAccountDto;
 import online.switcheroos.api.v1.dto.MapStructMapper;
 import online.switcheroos.api.v1.dto.NewAccountDto;
 import online.switcheroos.api.v1.model.*;
 import online.switcheroos.api.v1.repository.AccountRepository;
-import online.switcheroos.dto.AuthAccountResponse;
+import online.switcheroos.dto.AuthAccountResponseDto;
 import online.switcheroos.exception.AccountAlreadyExistsException;
 import online.switcheroos.exception.AccountAuthException;
 import online.switcheroos.exception.AccountNotFoundException;
 import online.switcheroos.model.Role;
 import online.switcheroos.model.Status;
-import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -31,50 +28,55 @@ public class AccountServiceImpl implements AccountService {
 
     private final MapStructMapper mapper;
 
-    //private final JobScheduler jobScheduler;
-
     @Override
-    public AuthAccountResponse authenticateAccount(AuthAccountDto authAccountDto, HttpServletRequest request) {
+    public AuthAccountResponseDto authenticateAccount(AuthAccountDto authAccountDto) {
         if (authAccountDto.getUsername() == null)
             throw new AccountAuthException("A username is required to authenticate an Account");
 
-        Password password = new Password(authAccountDto.getPassword());
-        // Password is expected to be hashed
-        if (authAccountDto.getPassword().length() != Password.HASHED_PASSWORD_LENGTH)
-            password.hash();
+        Account account = findAccountByUsername(authAccountDto.getUsername());
+        Password accountPassword = account.getPassword();
 
-        Username username = new Username(authAccountDto.getUsername());
-        AccountDto accountDto = findAccountByUsername(username.getValue());
-
-        AuthAccountResponse authAccountResponse =
-                accountDto.getPassword().equals(password.getValue()) ? successfulAuthResponse()  : failedAuthResponse();
-
-        //jobScheduler.enqueue(() -> addLoginAttempt(accountDto.getId(), authAccountResponse, request));
-        return authAccountResponse;
+        return accountPassword.matches(authAccountDto.getPassword())
+                ? successfulAuthResponse(account.getId())  : failedAuthResponse(account.getId());
     }
 
     @Override
-    public AccountDto findAccountById(UUID id) {
+    public AccountDto findAccountDtoById(UUID id) {
+        Account account = findAccountById(id);
+
+        return mapper.accountToAccountDto(account);
+    }
+
+    @Override
+    public Account findAccountById(UUID id) {
         Optional<Account> optAccount = repository.findById(id);
-        Account account = unwrapAccount(optAccount, "The account with the ID: " + id + " does not exist");
+        return unwrapAccount(optAccount, "The account with the ID: " + id + " does not exist");
+    }
+
+    @Override
+    public AccountDto findAccountDtoByUsername(String username) {
+        Account account = findAccountByUsername(username);
 
         return mapper.accountToAccountDto(account);
     }
 
     @Override
-    public AccountDto findAccountByUsername(String username) {
+    public Account findAccountByUsername(String username) {
         Optional<Account> optAccount = repository.findByUsername(username);
-        Account account = unwrapAccount(optAccount, "The account with the username: " + username + " does not exist");
+        return unwrapAccount(optAccount, "The account with the username: " + username + " does not exist");
+    }
+
+    @Override
+    public AccountDto findAccountDtoByEmail(String email) {
+        Account account = findAccountByEmail(email);
 
         return mapper.accountToAccountDto(account);
     }
 
     @Override
-    public AccountDto findAccountByEmail(String email) {
+    public Account findAccountByEmail(String email) {
         Optional<Account> optAccount = repository.findByEmail(email);
-        Account account = unwrapAccount(optAccount, "The account with the email: " + email + " does not exist");
-
-        return mapper.accountToAccountDto(account);
+        return unwrapAccount(optAccount, "The account with the email: " + email + " does not exist");
     }
 
     @Override
@@ -102,18 +104,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void addLoginAttempt(UUID accountId, AuthAccountResponse authResponse, HttpServletRequest request) {
-        Account account = unwrapAccount(repository.findById(accountId),
-                "The account with the ID: " + accountId + " does not exist");
+    public void logAuthAttempt(UUID accountId, boolean authenticated, Inet requestIp, String userAgent) {
+        Account account = findAccountById(accountId);
 
-        LoginAttempt loginAttempt = LoginAttempt.builder()
-                        .successful(authResponse.isAuthenticated())
-                .ipAddress(new Inet("86.146.85.217"))
-                .country("uk")
-                .userAgent("Chrome")
-                                .build();
-        //account.addLoginAttempt(loginAttempt);
-        repository.save(account);
+        AuthenticationAttempt attempt = AuthenticationAttempt.builder()
+                .account(account)
+                .successful(authenticated)
+                .timestamp(new Date())
+                .userAgent(userAgent)
+                .ipAddress(requestIp)
+                .build();
+        account.addLoginAttempt(attempt);
+        //TODO:drt - add country support
+        saveAccount(account);
     }
 
     private Account unwrapAccount(Optional<Account> account, String errMsg) {
@@ -122,12 +125,12 @@ public class AccountServiceImpl implements AccountService {
         throw new AccountNotFoundException(errMsg);
     }
 
-    private AuthAccountResponse failedAuthResponse() {
-        return new AuthAccountResponse(false, "Authentication failed. Invalid password for this account");
+    private AuthAccountResponseDto failedAuthResponse(UUID accountId) {
+        return new AuthAccountResponseDto(accountId, false, "Authentication failed. Invalid password for this account");
     }
 
-    private AuthAccountResponse successfulAuthResponse() {
-        return new AuthAccountResponse(true, "Authentication successful");
+    private AuthAccountResponseDto successfulAuthResponse(UUID accountId) {
+        return new AuthAccountResponseDto(accountId,true, "Authentication successful");
     }
 
 }

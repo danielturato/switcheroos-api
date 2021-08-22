@@ -86,7 +86,7 @@ class AccountServiceImplTest {
         given(repository.findById(any(UUID.class))).willReturn(Optional.of(this.account));
         given(mapper.accountToAccountDto(any(Account.class))).willReturn(this.accountDto);
 
-        AccountDto accountDto = accountService.findAccountById(account.getId());
+        AccountDto accountDto = accountService.findAccountDtoById(account.getId());
 
         verify(repository).findById(account.getId());
         verify(mapper).accountToAccountDto(any(Account.class));
@@ -99,7 +99,7 @@ class AccountServiceImplTest {
         given(repository.findByUsername(any(String.class))).willReturn(Optional.of(this.account));
         given(mapper.accountToAccountDto(any(Account.class))).willReturn(this.accountDto);
 
-        AccountDto accountDto = accountService.findAccountByUsername("testing");
+        AccountDto accountDto = accountService.findAccountDtoByUsername("testing");
 
         verify(repository).findByUsername(any(String.class));
         verify(mapper).accountToAccountDto(any(Account.class));
@@ -112,7 +112,7 @@ class AccountServiceImplTest {
         given(repository.findByEmail(any(String.class))).willReturn(Optional.of(this.account));
         given(mapper.accountToAccountDto(any(Account.class))).willReturn(this.accountDto);
 
-        AccountDto accountDto = accountService.findAccountByEmail("testing@switcheroos.online");
+        AccountDto accountDto = accountService.findAccountDtoByEmail("testing@switcheroos.online");
 
         verify(repository).findByEmail(any(String.class));
         verify(mapper).accountToAccountDto(any(Account.class));

@@ -2,6 +2,13 @@ server:
   servlet:
     context-path: /api
 
+org:
+  jobrunr:
+    background-job-server:
+      enabled: true
+    dashboard:
+      enabled: true
+
 ---
 
 # Hibernate Configuration
@@ -25,12 +32,7 @@ spring:
       mode: always
       data-locations: classpath:db-scripts/data.sql
 
-org:
-  jobrunr:
-    background-job-server:
-      enabled: true
-  dashboard:
-    enabled: true
+
 ---
 
 spring:
