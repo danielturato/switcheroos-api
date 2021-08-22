@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.model;
+package online.switcheroos.model;
 
 public enum Status {
     ACTIVE,

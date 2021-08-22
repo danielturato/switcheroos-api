@@ -1,16 +1,14 @@
-package online.switcheroos.accounts.api.v1.controller;
+package online.switcheroos.api.v1.controller;
 
-import online.switcheroos.accounts.api.v1.dto.AccountDto;
-import online.switcheroos.accounts.api.v1.dto.AuthAccountDto;
-import online.switcheroos.accounts.api.v1.dto.NewAccountDto;
-import online.switcheroos.accounts.api.v1.dto.ResourceResponseDto;
-import online.switcheroos.accounts.api.v1.model.Account;
-import online.switcheroos.accounts.dto.AuthAccountResponse;
+import online.switcheroos.api.v1.dto.AccountDto;
+import online.switcheroos.api.v1.dto.AuthAccountDto;
+import online.switcheroos.api.v1.dto.NewAccountDto;
+import online.switcheroos.api.v1.dto.ResourceResponseDto;
+import online.switcheroos.dto.AuthAccountResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 import java.util.UUID;
 
 

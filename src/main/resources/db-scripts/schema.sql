@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS login_history;
 DROP TABLE IF EXISTS accounts_roles;
 DROP TABLE IF EXISTS platform_accounts;
 DROP TABLE IF EXISTS accounts;
@@ -46,5 +47,18 @@ CREATE TABLE platform_accounts (
     CONSTRAINT fk_account
         FOREIGN KEY (account_id)
             REFERENCES accounts (id)
+            ON DELETE CASCADE
+);
+
+CREATE TABLE login_history (
+    account_id uuid NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
+    ip_address INET NOT NULL,
+    country varchar(20) NOT NULL,
+    user_agent varchar(70) NOT NULL,
+    successful boolean NOT NULL,
+    CONSTRAINT fk_account
+        FOREIGN KEY (account_id)
+            REFERENCES accounts(id)
             ON DELETE CASCADE
 );

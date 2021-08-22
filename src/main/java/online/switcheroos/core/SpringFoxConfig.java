@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.core;
+package online.switcheroos.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

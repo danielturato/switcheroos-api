@@ -1,11 +1,10 @@
-package online.switcheroos.accounts.api.v1.model;
+package online.switcheroos.api.v1.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import online.switcheroos.accounts.core.PostgreSQLEnumType;
-import online.switcheroos.accounts.model.PlatformAccount;
-import online.switcheroos.accounts.model.Role;
-import online.switcheroos.accounts.model.Status;
+import online.switcheroos.core.PostgreSQLEnumType;
+import online.switcheroos.model.PlatformAccount;
+import online.switcheroos.model.Role;
+import online.switcheroos.model.Status;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -60,13 +59,13 @@ public class Account implements Persistable<UUID> {
     @CollectionTable(name = "platform_accounts", joinColumns = @JoinColumn(name = "account_id"))
     private Set<PlatformAccount> platformAccounts;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "login_history", joinColumns = @JoinColumn(name = "account_id"))
-    private Set<LoginAttempt> loginHistory;
-
-    public void addLoginAttempt(LoginAttempt loginAttempt) {
-        loginHistory.add(loginAttempt);
-    }
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "login_history", joinColumns = @JoinColumn(name = "account_id"))
+//    private Set<LoginAttempt> loginHistory;
+//
+//    public void addLoginAttempt(LoginAttempt loginAttempt) {
+//        loginHistory.add(loginAttempt);
+//    }
 
     @Override
     public boolean isNew() {

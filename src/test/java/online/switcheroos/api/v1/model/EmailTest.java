@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.api.v1.model;
+package online.switcheroos.api.v1.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

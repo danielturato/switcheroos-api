@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.api.v1.model;
+package online.switcheroos.api.v1.model;
 
 
 import lombok.*;
@@ -21,7 +21,7 @@ public class LoginAttempt {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
-    @Type(type = "online.switcheroos.accounts.core.PostgreSQLInetType")
+    @Type(type = "online.switcheroos.core.PostgreSQLInetType")
     @Column(name = "ip_address")
     private Inet ipAddress;
 

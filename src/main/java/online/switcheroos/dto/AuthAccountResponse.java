@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.dto;
+package online.switcheroos.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,10 +1,10 @@
-package online.switcheroos.accounts.api.v1.dto;
+package online.switcheroos.api.v1.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import online.switcheroos.accounts.model.PlatformAccount;
-import online.switcheroos.accounts.model.Role;
-import online.switcheroos.accounts.model.Status;
+import online.switcheroos.model.PlatformAccount;
+import online.switcheroos.model.Role;
+import online.switcheroos.model.Status;
 
 import java.util.Set;
 import java.util.UUID;

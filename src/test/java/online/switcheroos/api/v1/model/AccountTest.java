@@ -1,10 +1,10 @@
-package online.switcheroos.accounts.api.v1.model;
+package online.switcheroos.api.v1.model;
 
-import online.switcheroos.accounts.api.v1.repository.AccountRepository;
-import online.switcheroos.accounts.model.Platform;
-import online.switcheroos.accounts.model.PlatformAccount;
-import online.switcheroos.accounts.model.Role;
-import online.switcheroos.accounts.model.Status;
+import online.switcheroos.api.v1.repository.AccountRepository;
+import online.switcheroos.model.Platform;
+import online.switcheroos.model.PlatformAccount;
+import online.switcheroos.model.Role;
+import online.switcheroos.model.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

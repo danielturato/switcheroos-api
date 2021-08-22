@@ -1,6 +1,6 @@
-package online.switcheroos.accounts.exception;
+package online.switcheroos.exception;
 
-import online.switcheroos.accounts.dto.ExceptionResponse;
+import online.switcheroos.dto.ExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

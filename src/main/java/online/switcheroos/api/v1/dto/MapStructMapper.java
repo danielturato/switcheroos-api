@@ -1,6 +1,6 @@
-package online.switcheroos.accounts.api.v1.dto;
+package online.switcheroos.api.v1.dto;
 
-import online.switcheroos.accounts.api.v1.model.Account;
+import online.switcheroos.api.v1.model.Account;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

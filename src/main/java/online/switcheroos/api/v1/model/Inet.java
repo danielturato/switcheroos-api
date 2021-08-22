@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.api.v1.model;
+package online.switcheroos.api.v1.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

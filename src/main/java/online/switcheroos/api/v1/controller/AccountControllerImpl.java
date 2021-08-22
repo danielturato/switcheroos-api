@@ -1,12 +1,12 @@
-package online.switcheroos.accounts.api.v1.controller;
+package online.switcheroos.api.v1.controller;
 
 import lombok.RequiredArgsConstructor;
-import online.switcheroos.accounts.api.v1.dto.AccountDto;
-import online.switcheroos.accounts.api.v1.dto.AuthAccountDto;
-import online.switcheroos.accounts.api.v1.dto.NewAccountDto;
-import online.switcheroos.accounts.api.v1.dto.ResourceResponseDto;
-import online.switcheroos.accounts.api.v1.service.AccountService;
-import online.switcheroos.accounts.dto.AuthAccountResponse;
+import online.switcheroos.api.v1.dto.AccountDto;
+import online.switcheroos.api.v1.dto.AuthAccountDto;
+import online.switcheroos.api.v1.dto.NewAccountDto;
+import online.switcheroos.api.v1.dto.ResourceResponseDto;
+import online.switcheroos.api.v1.service.AccountService;
+import online.switcheroos.dto.AuthAccountResponse;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +45,7 @@ public class AccountControllerImpl implements AccountController{
     public ResourceResponseDto createAccount(@RequestBody NewAccountDto accountDto) {
         AccountDto account = accountService.createAccount(accountDto);
         return new ResourceResponseDto("/api/v1/accounts/" + account.getId());
+        //TODO:drt - return path not static string path
     }
 
 }

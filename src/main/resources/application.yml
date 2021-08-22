@@ -15,14 +15,22 @@ spring:
     database: POSTGRESQL
     generate-ddl: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/accounts_db
+    url: jdbc:postgresql://localhost:5432/switcheroos_db
     username: postgres
     password: password
+
   sql:
     init:
       schema-locations: classpath:db-scripts/schema.sql
       mode: always
       data-locations: classpath:db-scripts/data.sql
+
+org:
+  jobrunr:
+    background-job-server:
+      enabled: true
+  dashboard:
+    enabled: true
 ---
 
 spring:

@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.api.v1.dto;
+package online.switcheroos.api.v1.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

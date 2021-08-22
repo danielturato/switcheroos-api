@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.model;
+package online.switcheroos.model;
 
 import lombok.*;
 import org.hibernate.annotations.Type;
@@ -16,7 +16,7 @@ import javax.persistence.Enumerated;
 public class PlatformAccount {
 
     @Enumerated(value = EnumType.STRING)
-    @Type(type = "online.switcheroos.accounts.core.PostgreSQLEnumType")
+    @Type(type = "online.switcheroos.core.PostgreSQLEnumType")
     private Platform platform;
 
     private String platformUsername;

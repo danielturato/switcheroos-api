@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.core;
+package online.switcheroos.core;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

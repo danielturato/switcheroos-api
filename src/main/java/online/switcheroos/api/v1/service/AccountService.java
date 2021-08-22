@@ -1,14 +1,13 @@
-package online.switcheroos.accounts.api.v1.service;
+package online.switcheroos.api.v1.service;
 
-import online.switcheroos.accounts.api.v1.dto.AccountDto;
-import online.switcheroos.accounts.api.v1.dto.AuthAccountDto;
-import online.switcheroos.accounts.api.v1.dto.NewAccountDto;
-import online.switcheroos.accounts.api.v1.model.Account;
-import online.switcheroos.accounts.dto.AuthAccountResponse;
+import online.switcheroos.api.v1.dto.AccountDto;
+import online.switcheroos.api.v1.dto.AuthAccountDto;
+import online.switcheroos.api.v1.dto.NewAccountDto;
+import online.switcheroos.api.v1.model.Account;
+import online.switcheroos.dto.AuthAccountResponse;
 import org.jobrunr.jobs.annotations.Job;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 import java.util.UUID;
 
 public interface AccountService {

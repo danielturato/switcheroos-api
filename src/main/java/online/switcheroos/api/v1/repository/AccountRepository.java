@@ -1,6 +1,6 @@
-package online.switcheroos.accounts.api.v1.repository;
+package online.switcheroos.api.v1.repository;
 
-import online.switcheroos.accounts.api.v1.model.Account;
+import online.switcheroos.api.v1.model.Account;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

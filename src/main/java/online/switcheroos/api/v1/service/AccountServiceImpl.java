@@ -1,18 +1,19 @@
-package online.switcheroos.accounts.api.v1.service;
+package online.switcheroos.api.v1.service;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import online.switcheroos.accounts.api.v1.dto.AccountDto;
-import online.switcheroos.accounts.api.v1.dto.AuthAccountDto;
-import online.switcheroos.accounts.api.v1.dto.MapStructMapper;
-import online.switcheroos.accounts.api.v1.dto.NewAccountDto;
-import online.switcheroos.accounts.api.v1.model.*;
-import online.switcheroos.accounts.api.v1.repository.AccountRepository;
-import online.switcheroos.accounts.dto.AuthAccountResponse;
-import online.switcheroos.accounts.exception.AccountAlreadyExistsException;
-import online.switcheroos.accounts.exception.AccountAuthException;
-import online.switcheroos.accounts.exception.AccountNotFoundException;
-import online.switcheroos.accounts.model.Role;
-import online.switcheroos.accounts.model.Status;
+import online.switcheroos.api.v1.dto.AccountDto;
+import online.switcheroos.api.v1.dto.AuthAccountDto;
+import online.switcheroos.api.v1.dto.MapStructMapper;
+import online.switcheroos.api.v1.dto.NewAccountDto;
+import online.switcheroos.api.v1.model.*;
+import online.switcheroos.api.v1.repository.AccountRepository;
+import online.switcheroos.dto.AuthAccountResponse;
+import online.switcheroos.exception.AccountAlreadyExistsException;
+import online.switcheroos.exception.AccountAuthException;
+import online.switcheroos.exception.AccountNotFoundException;
+import online.switcheroos.model.Role;
+import online.switcheroos.model.Status;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 public class AccountServiceImpl implements AccountService {
 
@@ -30,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final MapStructMapper mapper;
 
-    private final JobScheduler jobScheduler;
+    //private final JobScheduler jobScheduler;
 
     @Override
     public AuthAccountResponse authenticateAccount(AuthAccountDto authAccountDto, HttpServletRequest request) {
@@ -48,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
         AuthAccountResponse authAccountResponse =
                 accountDto.getPassword().equals(password.getValue()) ? successfulAuthResponse()  : failedAuthResponse();
 
-        jobScheduler.enqueue(() -> addLoginAttempt(accountDto.getId(), authAccountResponse, request));
+        //jobScheduler.enqueue(() -> addLoginAttempt(accountDto.getId(), authAccountResponse, request));
         return authAccountResponse;
     }
 
@@ -111,7 +112,7 @@ public class AccountServiceImpl implements AccountService {
                 .country("uk")
                 .userAgent("Chrome")
                                 .build();
-        account.addLoginAttempt(loginAttempt);
+        //account.addLoginAttempt(loginAttempt);
         repository.save(account);
     }
 

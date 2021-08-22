@@ -1,8 +1,8 @@
-package online.switcheroos.accounts.core;
+package online.switcheroos.core;
 
 import com.vladmihalcea.hibernate.type.ImmutableType;
 import com.vladmihalcea.hibernate.type.util.ReflectionUtils;
-import online.switcheroos.accounts.api.v1.model.Inet;
+import online.switcheroos.api.v1.model.Inet;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
 import java.sql.PreparedStatement;
