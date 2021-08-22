@@ -1,4 +1,4 @@
-package online.switcheroos.accounts.model;
+package online.switcheroos.accounts.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -25,10 +25,10 @@ public class ExceptionResponse {
         this.message = message;
         this.detail = detail;
         this.path = path;
-        this.timestamp = getTimestamp();
+        this.timestamp = setTimestamp();
     }
 
-    private String getTimestamp() {
+    private String setTimestamp() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(new Date());
     }

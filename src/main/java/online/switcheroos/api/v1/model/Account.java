@@ -60,16 +60,12 @@ public class Account implements Persistable<UUID> {
     @CollectionTable(name = "platform_accounts", joinColumns = @JoinColumn(name = "account_id"))
     private Set<PlatformAccount> platformAccounts;
 
-    public Account(Username username, Password password, Email email, String profilePicture, boolean verified,
-                   Status status, Set<Role> roles, Set<PlatformAccount> platformAccounts) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.profilePicture = profilePicture;
-        this.verified = verified;
-        this.status = status;
-        this.roles = roles;
-        this.platformAccounts = platformAccounts;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "login_history", joinColumns = @JoinColumn(name = "account_id"))
+    private Set<LoginAttempt> loginHistory;
+
+    public void addLoginAttempt(LoginAttempt loginAttempt) {
+        loginHistory.add(loginAttempt);
     }
 
     @Override
