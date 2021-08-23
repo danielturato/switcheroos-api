@@ -14,12 +14,12 @@ import javax.persistence.Enumerated;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PlatformAccount {
+public class SocialAccount {
 
     @Enumerated(value = EnumType.STRING)
     @Type(type = "online.switcheroos.core.PostgreSQLEnumType")
-    private Platform platform;
+    private Social social;
 
-    @JsonProperty("platform_username")
-    private String platformUsername;
+    @JsonProperty("social_username")
+    private String socialUsername;
 }

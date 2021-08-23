@@ -1,5 +1,6 @@
 package online.switcheroos.api.v1.controller;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import online.switcheroos.api.v1.dto.AccountDto;
 import online.switcheroos.api.v1.dto.AuthAccountDto;
 import online.switcheroos.api.v1.dto.NewAccountDto;
@@ -30,6 +31,9 @@ public interface AccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ResourceResponseDto createAccount(@RequestBody NewAccountDto accountDto);
+    ResourceResponseDto createAccount(@RequestBody NewAccountDto accountDto, HttpServletRequest request);
+
+    @PatchMapping(value = "/{username}", consumes = "application/json-patch+json")
+    AccountDto updateAccount(@PathVariable String username, @RequestBody JsonPatch patch);
 
 }

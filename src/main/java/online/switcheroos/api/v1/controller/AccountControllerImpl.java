@@ -1,10 +1,12 @@
 package online.switcheroos.api.v1.controller;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import lombok.RequiredArgsConstructor;
 import online.switcheroos.api.v1.dto.AccountDto;
 import online.switcheroos.api.v1.dto.AuthAccountDto;
 import online.switcheroos.api.v1.dto.NewAccountDto;
 import online.switcheroos.api.v1.dto.ResourceResponseDto;
+import online.switcheroos.api.v1.model.Account;
 import online.switcheroos.api.v1.model.Inet;
 import online.switcheroos.api.v1.service.AccountService;
 import online.switcheroos.core.HttpReqRespUtils;
@@ -51,10 +53,17 @@ public class AccountControllerImpl implements AccountController{
     }
 
     @Override
-    public ResourceResponseDto createAccount(@RequestBody NewAccountDto accountDto) {
+    public ResourceResponseDto createAccount(@RequestBody NewAccountDto accountDto, HttpServletRequest request) {
         AccountDto account = accountService.createAccount(accountDto);
-        return new ResourceResponseDto("/api/v1/accounts/" + account.getId());
-        //TODO:drt - return path not static string path
+        return new ResourceResponseDto(request.getRequestURI() + "/" + account.getId());
+    }
+
+    @Override
+    public AccountDto updateAccount(String username, JsonPatch patch) {
+        Account account = accountService.findAccountByUsername(username);
+        Account patchedAccount = accountService.patchAccount(patch, account);
+
+        return accountService.saveAccount(patchedAccount);
     }
 
 }

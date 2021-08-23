@@ -23,4 +23,6 @@ public interface MapStructMapper {
     @Mapping(source = "email", target = "email.value")
     @Mapping(source = "password", target = "password.value")
     Account newAccountDtoAccount(NewAccountDto newAccountDto);
+
+    PatchAccountDto accountToPatchAccountDto(Account account);
 }

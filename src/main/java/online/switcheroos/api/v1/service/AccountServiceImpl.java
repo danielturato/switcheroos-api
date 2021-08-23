@@ -1,16 +1,19 @@
 package online.switcheroos.api.v1.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
-import online.switcheroos.api.v1.dto.AccountDto;
-import online.switcheroos.api.v1.dto.AuthAccountDto;
-import online.switcheroos.api.v1.dto.MapStructMapper;
-import online.switcheroos.api.v1.dto.NewAccountDto;
+import online.switcheroos.api.v1.dto.*;
 import online.switcheroos.api.v1.model.*;
 import online.switcheroos.api.v1.repository.AccountRepository;
 import online.switcheroos.dto.AuthAccountResponseDto;
 import online.switcheroos.exception.AccountAlreadyExistsException;
 import online.switcheroos.exception.AccountAuthException;
 import online.switcheroos.exception.AccountNotFoundException;
+import online.switcheroos.exception.InvalidPatchArgumentsException;
 import online.switcheroos.model.Role;
 import online.switcheroos.model.Status;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,6 +30,8 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository repository;
 
     private final MapStructMapper mapper;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public AuthAccountResponseDto authenticateAccount(AuthAccountDto authAccountDto) {
@@ -104,6 +109,22 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account patchAccount(JsonPatch patch, Account account) {
+        try {
+            PatchAccountDto patchAccountDto = mapper.accountToPatchAccountDto(account);
+
+            JsonNode patched = patch.apply(objectMapper.convertValue(patchAccountDto, JsonNode.class));
+            patchAccountDto = objectMapper.treeToValue(patched, PatchAccountDto.class);
+            updatePatchedValues(patchAccountDto, account);
+
+            return account;
+        } catch (JsonPatchException | JsonProcessingException ex) {
+            throw new InvalidPatchArgumentsException(
+                            "Invalid patch operation. Something went wrong while processing this query, please try again");
+        }
+    }
+
+    @Override
     public void logAuthAttempt(UUID accountId, boolean authenticated, Inet requestIp, String userAgent) {
         Account account = findAccountById(accountId);
 
@@ -117,6 +138,20 @@ public class AccountServiceImpl implements AccountService {
         account.addLoginAttempt(attempt);
         //TODO:drt - add country support
         saveAccount(account);
+    }
+
+    private void updatePatchedValues(PatchAccountDto patchAccountDto, Account account) {
+        account.setPlatformAccounts(patchAccountDto.getPlatformAccounts());
+        account.setUsername(patchAccountDto.getUsername());
+        account.setSocialAccounts(patchAccountDto.getSocialAccounts());
+
+        String oldEmail = account.getEmail().getValue();
+        account.setEmail(patchAccountDto.getEmail());
+        if (!account.getEmail().getValue().equals(oldEmail) && account.isVerified()) {
+            account.setVerified(false);
+            //TODO:drt -  email verification logic job
+        }
+
     }
 
     private Account unwrapAccount(Optional<Account> account, String errMsg) {

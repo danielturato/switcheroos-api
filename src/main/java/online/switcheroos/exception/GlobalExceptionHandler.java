@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
-public class AccountExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = AccountAlreadyExistsException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
@@ -51,6 +51,17 @@ public class AccountExceptionHandler {
                 HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 ex.getMessage(),
                 "You've included a null value within this request",
+                request.getServletPath()
+        );
+    }
+
+    @ExceptionHandler(value = InvalidPatchArgumentsException.class)
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    public ExceptionResponse invalidPatchArgumentsException(InvalidPatchArgumentsException ex, HttpServletRequest request) {
+        return new ExceptionResponse(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                ex.getMessage(),
+                "You might be trying to update an non-updatable field. Please check the format of the request",
                 request.getServletPath()
         );
     }

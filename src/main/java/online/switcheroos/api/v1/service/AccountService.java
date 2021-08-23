@@ -1,5 +1,6 @@
 package online.switcheroos.api.v1.service;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import online.switcheroos.api.v1.dto.AccountDto;
 import online.switcheroos.api.v1.dto.AuthAccountDto;
 import online.switcheroos.api.v1.dto.NewAccountDto;
@@ -30,7 +31,9 @@ public interface AccountService {
 
     AccountDto createAccount(NewAccountDto accountDto);
 
-    @Job(name = "Add login attempt for account ID: %0", retries = 2)
+    Account patchAccount(JsonPatch patch, Account account);
+
+    @Job(name = "Log authentication attempt for account ID - %0", retries = 2)
     void logAuthAttempt(UUID accountId, boolean authenticated, Inet requestIp, String userAgent);
 
 }

@@ -1,9 +1,11 @@
 package online.switcheroos.api.v1.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import online.switcheroos.model.PlatformAccount;
 import online.switcheroos.model.Role;
+import online.switcheroos.model.SocialAccount;
 import online.switcheroos.model.Status;
 
 import java.util.Set;
@@ -24,6 +26,7 @@ public class AccountDto {
 
     private String email;
 
+    @JsonProperty("profile_picture")
     private String profilePicture;
 
     private boolean verified;
@@ -32,7 +35,11 @@ public class AccountDto {
 
     private Set<Role> roles;
 
+    @JsonProperty("platform_accounts")
     private Set<PlatformAccount> platformAccounts;
+
+    @JsonProperty("social_accounts")
+    private Set<SocialAccount> socialAccounts;
 
     public AccountDto() {}
 }

@@ -1,10 +1,12 @@
 DROP TABLE IF EXISTS auth_history;
 DROP TABLE IF EXISTS accounts_roles;
 DROP TABLE IF EXISTS platform_accounts;
+DROP TABLE IF EXISTS social_accounts;
 DROP TABLE IF EXISTS accounts;
 DROP TYPE IF EXISTS status;
 DROP TYPE IF EXISTS role;
 DROP TYPE IF EXISTS platform;
+DROP TYPE IF EXISTS social;
 
 
 CREATE TYPE status as ENUM  (
@@ -17,6 +19,10 @@ CREATE TYPE role as ENUM (
 
 CREATE TYPE platform as ENUM (
     'PSN', 'XBOX', 'ACTI_BLIZZARD'
+    );
+
+CREATE TYPE social as ENUM (
+    'TWITTER', 'DISCORD'
     );
 
 CREATE TABLE accounts (
@@ -48,6 +54,17 @@ CREATE TABLE platform_accounts (
         FOREIGN KEY (account_id)
             REFERENCES accounts (id)
             ON DELETE CASCADE
+);
+
+CREATE TABLE social_accounts (
+    account_id uuid NOT NULL,
+    social social NOT NULL,
+    social_username varchar(50) NOT NULL,
+    UNIQUE (account_id, social),
+    CONSTRAINT fk_account
+        FOREIGN KEY (account_id)
+            REFERENCES accounts (id)
+                ON DELETE CASCADE
 );
 
 CREATE TABLE auth_history (
